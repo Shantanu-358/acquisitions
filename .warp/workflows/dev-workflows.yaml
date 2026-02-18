@@ -1,0 +1,67 @@
+name: "Acquisitions Development Workflows"
+version: "1.0.0"
+
+workflows:
+  - name: "Start Development"
+    description: "Set up and start the development environment"
+    commands:
+      - name: "Load aliases"
+        command: ". .\.warp_aliases.ps1"
+      - name: "Install dependencies"
+        command: "npm ci"
+      - name: "Start dev server"
+        command: "npm run dev"
+        
+  - name: "Code Quality Check"
+    description: "Run linting and formatting checks"
+    commands:
+      - name: "ESLint check"
+        command: "npm run lint"
+      - name: "Prettier check"
+        command: "npm run format:check"
+        
+  - name: "Fix Code Issues"
+    description: "Auto-fix linting and formatting issues"
+    commands:
+      - name: "ESLint fix"
+        command: "npm run lint:fix"
+      - name: "Prettier format"
+        command: "npm run format"
+        
+  - name: "Database Setup"
+    description: "Generate and run database migrations"
+    commands:
+      - name: "Generate migrations"
+        command: "npm run db:generate"
+      - name: "Run migrations"
+        command: "npm run db:migrate"
+      - name: "Open Drizzle Studio"
+        command: "npm run db:studio"
+        
+  - name: "Git Workflow"
+    description: "Standard git workflow for feature development"
+    commands:
+      - name: "Check status"
+        command: "git status"
+      - name: "Stage all changes"
+        command: "git add ."
+      - name: "Commit with message"
+        command: "git commit -m '{{commit_message}}'"
+        params:
+          - name: "commit_message"
+            description: "Commit message"
+            required: true
+      - name: "Push to remote"
+        command: "git push"
+        
+  - name: "Fresh Start"
+    description: "Clean install and setup from scratch"
+    commands:
+      - name: "Remove node_modules"
+        command: "Remove-Item -Recurse -Force node_modules -ErrorAction SilentlyContinue"
+      - name: "Clean install"
+        command: "npm ci"
+      - name: "Run migrations"
+        command: "npm run db:migrate"
+      - name: "Start development"
+        command: "npm run dev"

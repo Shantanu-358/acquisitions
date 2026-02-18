@@ -1,2 +1,6 @@
 node_modules
 .env.*
+
+# Warp configuration
+.warp_aliases.ps1
+.warprc

@@ -1,5 +1,14 @@
 node_modules
+.env
 .env.*
+!.env.*.example
+
+# Neon Local metadata
+.neon_local/
+
+# Logs
+logs/
+*.log
 
 # Warp configuration
 .warp_aliases.ps1

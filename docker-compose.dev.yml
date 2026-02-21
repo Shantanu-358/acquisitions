@@ -1,0 +1,30 @@
+services:
+  neon-local:
+    image: neondatabase/neon_local:latest
+    container_name: neon-local
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env.development
+    # Persist branch per git branch (optional — remove if not needed)
+    volumes:
+      - ./.neon_local/:/tmp/.neon_local
+      - ./.git/HEAD:/tmp/.git/HEAD:ro
+    restart: unless-stopped
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: acquisitions-app-dev
+    ports:
+      - "${PORT:-3000}:3000"
+    env_file:
+      - .env.development
+    # environment:
+    #   # Override DATABASE_URL to use the compose network service name
+    #   DATABASE_URL: postgres://neon:npg@neon-local:5432/neondb
+    #   NEON_LOCAL_HOST: neon-local
+    depends_on:
+      - neon-local
+    restart: unless-stopped

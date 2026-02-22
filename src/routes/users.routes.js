@@ -7,7 +7,6 @@ import {
 } from '#controllers/users.controller.js';
 import {
   authenticateToken,
-  requireRole,
   requireOwnershipOrAdmin,
 } from '#middleware/auth.middleware.js';
 

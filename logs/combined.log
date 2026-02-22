@@ -127,3 +127,8 @@
 {"level":"info","message":"::ffff:172.19.0.1 - - [22/Feb/2026:13:34:25 +0000] \"GET / HTTP/1.1\" 404 139 \"-\" \"HTTPie\"","service":"acquisitions-api"}
 {"level":"info","message":"Hello from Aquisitions!","service":"acquisitions-api"}
 {"level":"info","message":"::ffff:172.19.0.1 - - [22/Feb/2026:13:34:34 +0000] \"GET / HTTP/1.1\" 200 23 \"-\" \"HTTPie\"","service":"acquisitions-api"}
+{"level":"info","message":"Hello from Aquisitions!","service":"acquisitions-api"}
+{"level":"info","message":"::ffff:172.19.0.1 - - [22/Feb/2026:13:35:34 +0000] \"GET / HTTP/1.1\" 200 23 \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36\"","service":"acquisitions-api"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Feb/2026:14:11:32 +0000] \"GET /health HTTP/1.1\" 200 73 \"-\" \"-\"","service":"acquisitions-api"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Feb/2026:14:11:32 +0000] \"GET /api HTTP/1.1\" 200 51 \"-\" \"-\"","service":"acquisitions-api"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Feb/2026:14:11:33 +0000] \"GET /nonexistent HTTP/1.1\" 404 27 \"-\" \"-\"","service":"acquisitions-api"}

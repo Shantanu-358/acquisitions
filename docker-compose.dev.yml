@@ -21,6 +21,10 @@ services:
       - "${PORT:-3000}:3000"
     env_file:
       - .env.development
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: ["npx", "nodemon", "-L", "src/index.js"]
     # environment:
     #   # Override DATABASE_URL to use the compose network service name
     #   DATABASE_URL: postgres://neon:npg@neon-local:5432/neondb

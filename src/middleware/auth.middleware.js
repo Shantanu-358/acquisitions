@@ -13,16 +13,16 @@ export const authenticateToken = async (req, res, next) => {
       logger.warn('Access attempted without token');
       return res.status(401).json({
         error: 'Unauthorized',
-        message: 'Access token required'
+        message: 'Access token required',
       });
     }
 
     // Verify the token
     const decoded = jwttoken.verify(token);
-    
+
     // Get user details from database to ensure user still exists
     const user = await getUserById(decoded.id);
-    
+
     // Attach user to request object (excluding password)
     req.user = {
       id: user.id,
@@ -30,7 +30,7 @@ export const authenticateToken = async (req, res, next) => {
       name: user.name,
       role: user.role,
       created_at: user.created_at,
-      updated_at: user.updated_at
+      updated_at: user.updated_at,
     };
 
     logger.info(`User ${user.email} authenticated successfully`);
@@ -40,14 +40,14 @@ export const authenticateToken = async (req, res, next) => {
       logger.warn('Token valid but user no longer exists');
       return res.status(401).json({
         error: 'Unauthorized',
-        message: 'Invalid token - user not found'
+        message: 'Invalid token - user not found',
       });
     }
-    
+
     logger.warn('Token verification failed:', e.message);
     return res.status(403).json({
       error: 'Forbidden',
-      message: 'Invalid or expired token'
+      message: 'Invalid or expired token',
     });
   }
 };
@@ -56,23 +56,25 @@ export const authenticateToken = async (req, res, next) => {
  * Middleware to check if user has required role(s)
  * @param {string|string[]} allowedRoles - Role or array of roles allowed
  */
-export const requireRole = (allowedRoles) => {
+export const requireRole = allowedRoles => {
   return (req, res, next) => {
     if (!req.user) {
       logger.warn('Role check attempted without authentication');
       return res.status(401).json({
         error: 'Unauthorized',
-        message: 'Authentication required'
+        message: 'Authentication required',
       });
     }
 
     const roles = Array.isArray(allowedRoles) ? allowedRoles : [allowedRoles];
-    
+
     if (!roles.includes(req.user.role)) {
-      logger.warn(`User ${req.user.id} with role ${req.user.role} attempted to access resource requiring roles: ${roles.join(', ')}`);
+      logger.warn(
+        `User ${req.user.id} with role ${req.user.role} attempted to access resource requiring roles: ${roles.join(', ')}`
+      );
       return res.status(403).json({
         error: 'Forbidden',
-        message: 'Insufficient permissions'
+        message: 'Insufficient permissions',
       });
     }
 
@@ -90,19 +92,21 @@ export const requireOwnershipOrAdmin = (paramName = 'id') => {
       logger.warn('Ownership check attempted without authentication');
       return res.status(401).json({
         error: 'Unauthorized',
-        message: 'Authentication required'
+        message: 'Authentication required',
       });
     }
 
     const resourceUserId = parseInt(req.params[paramName]);
-    
+
     if (req.user.role === 'admin' || req.user.id === resourceUserId) {
       next();
     } else {
-      logger.warn(`User ${req.user.id} attempted to access resource belonging to user ${resourceUserId}`);
+      logger.warn(
+        `User ${req.user.id} attempted to access resource belonging to user ${resourceUserId}`
+      );
       return res.status(403).json({
         error: 'Forbidden',
-        message: 'You can only access your own resources'
+        message: 'You can only access your own resources',
       });
     }
   };
@@ -118,21 +122,24 @@ export const optionalAuth = async (req, res, next) => {
     if (token) {
       const decoded = jwttoken.verify(token);
       const user = await getUserById(decoded.id);
-      
+
       req.user = {
         id: user.id,
         email: user.email,
         name: user.name,
         role: user.role,
         created_at: user.created_at,
-        updated_at: user.updated_at
+        updated_at: user.updated_at,
       };
     }
 
     next();
   } catch (e) {
     // For optional auth, we continue even if token is invalid
-    logger.info('Optional auth failed, continuing without user context:', e.message);
+    logger.info(
+      'Optional auth failed, continuing without user context:',
+      e.message
+    );
     next();
   }
 };

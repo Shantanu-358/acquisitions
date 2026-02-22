@@ -54,6 +54,7 @@ docker compose -f docker-compose.dev.yml --env-file .env.development up --build
 ```
 
 This starts two services:
+
 - `neon-local` — Neon Local proxy on port 5432 (creates an ephemeral branch)
 - `app` — the Express app on port 3000
 

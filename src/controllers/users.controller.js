@@ -1,6 +1,14 @@
 import logger from '#config/logger.js';
-import { getAllUsers, getUserById, updateUser, deleteUser } from '#services/users.service.js';
-import { userIdSchema, updateUserSchema } from '#validations/users.validation.js';
+import {
+  getAllUsers,
+  getUserById,
+  updateUser,
+  deleteUser,
+} from '#services/users.service.js';
+import {
+  userIdSchema,
+  updateUserSchema,
+} from '#validations/users.validation.js';
 
 export const fetchAllUsers = async (req, res, next) => {
   try {
@@ -11,7 +19,7 @@ export const fetchAllUsers = async (req, res, next) => {
     res.json({
       message: 'Users retrieved successfully',
       users: allUsers,
-      count: allUsers.length
+      count: allUsers.length,
     });
   } catch (e) {
     logger.error(e);
@@ -24,11 +32,13 @@ export const fetchUserById = async (req, res, next) => {
     // Validate request parameters
     const validation = userIdSchema.safeParse(req.params);
     if (!validation.success) {
-      logger.warn('Invalid user ID provided', { errors: validation.error.errors });
+      logger.warn('Invalid user ID provided', {
+        errors: validation.error.errors,
+      });
       return res.status(400).json({
         error: 'Validation Error',
         message: 'Invalid user ID',
-        details: validation.error.errors
+        details: validation.error.errors,
       });
     }
 
@@ -39,14 +49,14 @@ export const fetchUserById = async (req, res, next) => {
 
     res.json({
       message: 'User retrieved successfully',
-      user
+      user,
     });
   } catch (e) {
     if (e.message === 'User not found') {
       logger.warn(`User not found: ${req.params.id}`);
       return res.status(404).json({
         error: 'Not Found',
-        message: 'User not found'
+        message: 'User not found',
       });
     }
     logger.error('Error fetching user by ID:', e);
@@ -59,22 +69,26 @@ export const updateUserById = async (req, res, next) => {
     // Validate request parameters
     const paramsValidation = userIdSchema.safeParse(req.params);
     if (!paramsValidation.success) {
-      logger.warn('Invalid user ID provided for update', { errors: paramsValidation.error.errors });
+      logger.warn('Invalid user ID provided for update', {
+        errors: paramsValidation.error.errors,
+      });
       return res.status(400).json({
         error: 'Validation Error',
         message: 'Invalid user ID',
-        details: paramsValidation.error.errors
+        details: paramsValidation.error.errors,
       });
     }
 
     // Validate request body
     const bodyValidation = updateUserSchema.safeParse(req.body);
     if (!bodyValidation.success) {
-      logger.warn('Invalid update data provided', { errors: bodyValidation.error.errors });
+      logger.warn('Invalid update data provided', {
+        errors: bodyValidation.error.errors,
+      });
       return res.status(400).json({
         error: 'Validation Error',
         message: 'Invalid update data',
-        details: bodyValidation.error.errors
+        details: bodyValidation.error.errors,
       });
     }
 
@@ -83,27 +97,29 @@ export const updateUserById = async (req, res, next) => {
 
     // Only admins can change user roles
     if (updates.role && req.user.role !== 'admin') {
-      logger.warn(`Non-admin user ${req.user.id} attempted to change user role`);
+      logger.warn(
+        `Non-admin user ${req.user.id} attempted to change user role`
+      );
       return res.status(403).json({
         error: 'Forbidden',
-        message: 'Only administrators can change user roles'
+        message: 'Only administrators can change user roles',
       });
     }
 
     logger.info(`User ${req.user.id} updating user ${id}`);
-        
+
     const updatedUser = await updateUser(id, updates);
 
     res.json({
       message: 'User updated successfully',
-      user: updatedUser
+      user: updatedUser,
     });
   } catch (e) {
     if (e.message === 'User not found') {
       logger.warn(`User not found for update: ${req.params.id}`);
       return res.status(404).json({
         error: 'Not Found',
-        message: 'User not found'
+        message: 'User not found',
       });
     }
     logger.error('Error updating user:', e);
@@ -116,11 +132,13 @@ export const deleteUserById = async (req, res, next) => {
     // Validate request parameters
     const validation = userIdSchema.safeParse(req.params);
     if (!validation.success) {
-      logger.warn('Invalid user ID provided for deletion', { errors: validation.error.errors });
+      logger.warn('Invalid user ID provided for deletion', {
+        errors: validation.error.errors,
+      });
       return res.status(400).json({
         error: 'Validation Error',
         message: 'Invalid user ID',
-        details: validation.error.errors
+        details: validation.error.errors,
       });
     }
 
@@ -131,30 +149,32 @@ export const deleteUserById = async (req, res, next) => {
       // Check if there are other admins (this is a safety measure)
       const allUsers = await getAllUsers();
       const adminCount = allUsers.filter(user => user.role === 'admin').length;
-            
+
       if (adminCount <= 1) {
-        logger.warn(`Last admin user ${id} attempted to delete their own account`);
+        logger.warn(
+          `Last admin user ${id} attempted to delete their own account`
+        );
         return res.status(403).json({
           error: 'Forbidden',
-          message: 'Cannot delete the last administrator account'
+          message: 'Cannot delete the last administrator account',
         });
       }
     }
 
     logger.info(`User ${req.user.id} deleting user ${id}`);
-        
+
     const deletedUser = await deleteUser(id);
 
     res.json({
       message: 'User deleted successfully',
-      user: deletedUser
+      user: deletedUser,
     });
   } catch (e) {
     if (e.message === 'User not found') {
       logger.warn(`User not found for deletion: ${req.params.id}`);
       return res.status(404).json({
         error: 'Not Found',
-        message: 'User not found'
+        message: 'User not found',
       });
     }
     logger.error('Error deleting user:', e);

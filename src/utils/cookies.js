@@ -16,7 +16,7 @@ const cookies = {
 
   get: (req, name) => {
     return req.cookies[name];
-  }
+  },
 };
 
 export default cookies;

@@ -13,7 +13,7 @@ jobs:
 
     env:
       NODE_ENV: test
-      NODE_OPTIONS: "--experimental-vm-modules"
+      NODE_OPTIONS: '--experimental-vm-modules'
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
     steps:
@@ -23,8 +23,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20.x"
-          cache: "npm"
+          node-version: '20.x'
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm ci

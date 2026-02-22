@@ -5,6 +5,7 @@ This document outlines the Warp terminal optimizations set up for this Node.js/E
 ## Quick Setup
 
 1. **Load PowerShell aliases** (for Windows):
+
    ```powershell
    . .\.warp_aliases.ps1
    ```
@@ -17,18 +18,21 @@ This document outlines the Warp terminal optimizations set up for this Node.js/E
 ## Available Commands
 
 ### Development
+
 - `dev` - Start development server with file watching
 - `lint` - Run ESLint
 - `lintfix` - Run ESLint with auto-fix
-- `format` - Format code with Prettier  
+- `format` - Format code with Prettier
 - `formatcheck` - Check code formatting
 
 ### Database Operations
+
 - `dbgen` - Generate Drizzle migrations
 - `dbmigrate` - Run database migrations
 - `dbstudio` - Open Drizzle Studio
 
 ### Git Workflow
+
 - `gs` - Git status
 - `ga` - Git add
 - `gc` - Git commit
@@ -37,6 +41,7 @@ This document outlines the Warp terminal optimizations set up for this Node.js/E
 - `gd` - Git diff
 
 ### Navigation Shortcuts
+
 - `srcdir` - Navigate to src directory
 - `cdconfig()` - Navigate to src/config
 - `cdctrl()` - Navigate to src/controllers
@@ -70,6 +75,7 @@ acquisitions/
 ## Workflow Recommendations
 
 ### Daily Development
+
 1. `dev` - Start development server
 2. Make your changes
 3. `check-all` - Run linting and formatting checks
@@ -80,6 +86,7 @@ acquisitions/
 8. `gp` - Push to remote
 
 ### Database Changes
+
 1. Modify models in `src/models/`
 2. `dbgen` - Generate migrations
 3. `dbmigrate` - Apply migrations
@@ -95,6 +102,7 @@ acquisitions/
 ## Environment Variables
 
 Make sure to set up your `.env` file with:
+
 - `DATABASE_URL` - PostgreSQL connection string
 - `JWT_SECRET` - JWT signing secret
 - `PORT` - Server port (default: 3000)
@@ -103,6 +111,7 @@ Make sure to set up your `.env` file with:
 ## Troubleshooting
 
 - **PowerShell execution policy**: If scripts don't run, try:
+
   ```powershell
   Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
   ```

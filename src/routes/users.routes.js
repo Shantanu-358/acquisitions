@@ -1,14 +1,14 @@
 import express from 'express';
-import { 
-  fetchAllUsers, 
-  fetchUserById, 
-  updateUserById, 
-  deleteUserById 
+import {
+  fetchAllUsers,
+  fetchUserById,
+  updateUserById,
+  deleteUserById,
 } from '#controllers/users.controller.js';
-import { 
-  authenticateToken, 
-  requireRole, 
-  requireOwnershipOrAdmin 
+import {
+  authenticateToken,
+  requireRole,
+  requireOwnershipOrAdmin,
 } from '#middleware/auth.middleware.js';
 
 const router = express.Router();
@@ -23,6 +23,11 @@ router.get('/:id', authenticateToken, fetchUserById);
 router.put('/:id', authenticateToken, updateUserById);
 
 // DELETE /users/:id - Delete user (own profile or admin)
-router.delete('/:id', authenticateToken, requireOwnershipOrAdmin(), deleteUserById);
+router.delete(
+  '/:id',
+  authenticateToken,
+  requireOwnershipOrAdmin(),
+  deleteUserById
+);
 
 export default router;
